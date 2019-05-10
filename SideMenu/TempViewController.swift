@@ -14,8 +14,7 @@ class TempViewController: UIViewController {
         let button = UIButton(type: .system)
         button.setTitle("Open", for: .normal)
         button.addTarget(self, action: #selector(self.buttonSideMenuClicked), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .red
+        button.backgroundColor = .blue
         return button
     }()
     
@@ -26,13 +25,14 @@ class TempViewController: UIViewController {
         view.backgroundColor = .orange
         
         
-        self.view.addSubview(button)
-        button.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
-        button.center = self.view.center
-        
         
         let sideMenu = UIBarButtonItem(title: "Menu", style: .plain, target: self, action: #selector(self.openSideMenu))
         navigationItem.leftBarButtonItem = sideMenu
+        
+        
+        self.view.addSubview(button)
+        button.frame = CGRect(x: 50, y: 150, width: 100, height: 100)
+      
         
     }
     
@@ -50,11 +50,6 @@ class TempViewController: UIViewController {
     @objc func openSideMenu(){
         if let delegate = UIApplication.shared.delegate as? AppDelegate{
             delegate.sideMenu?.showLeftSide()
-            
-            
-            Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { (_) in
-                delegate.sideMenu?.hide()
-            }
         }
     }
 

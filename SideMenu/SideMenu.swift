@@ -23,26 +23,24 @@ class SideMenu:UIViewController{
     let sizeMenuWidth: CGFloat = 200
     var currentState: SlideOutState = .bothCollapsed
     
-   fileprivate lazy var disableView:UIView={
+    fileprivate lazy var disableView:UIView={
         
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor.black.withAlphaComponent(0.25)
-        view.isUserInteractionEnabled = true
- 
+        view.backgroundColor = UIColor.clear
+        
         let rightGesture = UISwipeGestureRecognizer(target: self, action: #selector(self.rightPanGestireRecogizer))
         rightGesture.direction = .right
         view.addGestureRecognizer(rightGesture)
-
+        
         let leftGesture = UISwipeGestureRecognizer(target: self, action: #selector(self.leftPanGestireRecogizer))
         leftGesture.direction = .left
         view.addGestureRecognizer(leftGesture)
-
+        
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.tapGestureRecognzer))
-        tapGesture.numberOfTapsRequired = 1
         view.addGestureRecognizer(tapGesture)
         
-      return view
+        return view
         
     }()
     
@@ -69,9 +67,6 @@ class SideMenu:UIViewController{
                 leftViewView.rightAnchor.constraint(equalTo: centerNavigationView.leftAnchor, constant: 0).isActive = true
                 leftViewView.widthAnchor.constraint(equalToConstant: self.sizeMenuWidth).isActive = true
          
-               
-               
-                
             }
             
             if let rightView = rightViewController,let rigtViewView = rightView.view{
@@ -107,31 +102,26 @@ class SideMenu:UIViewController{
     
     
    fileprivate func manageLeftSideMenuVisibility(show:Bool){
-        if let _value = centerNavigationController?.view,let leftView = leftViewController,let leftViewView = leftView.view{
+        if let _value = centerNavigationController?.view,let leftView = leftViewController,let leftViewView = leftView.view,let appDelegate = UIApplication.shared.delegate as? AppDelegate,let window = appDelegate.window{
             self.currentState = show ? .leftPanelExpanded : .bothCollapsed
             if show{
                
-                leftViewView.addSubview(disableView)
-                disableView.topAnchor.constraint(equalTo: leftViewView.topAnchor, constant: 0).isActive = true
-                disableView.bottomAnchor.constraint(equalTo: leftViewView.bottomAnchor, constant: 0).isActive = true
+                window.addSubview(disableView)
+                disableView.topAnchor.constraint(equalTo: window.topAnchor, constant: 0).isActive = true
+                disableView.bottomAnchor.constraint(equalTo: window.bottomAnchor, constant: 0).isActive = true
                 disableView.leftAnchor.constraint(equalTo: leftViewView.rightAnchor, constant: 0).isActive = true
-                disableView.widthAnchor.constraint(equalToConstant: 2000).isActive = true
-                disableView.alpha = 0
+                disableView.rightAnchor.constraint(equalTo: window.rightAnchor).isActive = true
             }
             
             
             UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseOut, animations: {
                 _value.frame.origin.x = show ? self.sizeMenuWidth : 0
-                self.disableView.alpha = show ? 1 : 0
             }, completion: { (bool) in
           
                 if bool,!show{
                     self.disableView.removeFromSuperview()
                 }
             })
-            
-            
-            
             
         }
         
@@ -140,22 +130,22 @@ class SideMenu:UIViewController{
  
    fileprivate func manageRightSideMenuVisibility(show:Bool){
         self.currentState = show ? .rightPanelExpanded : .bothCollapsed
-        if let _value = centerNavigationController?.view,let rightView = rightViewController,let rigtViewView = rightView.view{
+        if let _value = centerNavigationController?.view,let rightView = rightViewController,let rigtViewView = rightView.view,let appDelegate = UIApplication.shared.delegate as? AppDelegate,let window = appDelegate.window{
             
             if show{
                 if show{
                     rigtViewView.addSubview(disableView)
-                    disableView.topAnchor.constraint(equalTo: rigtViewView.topAnchor, constant: 0).isActive = true
-                    disableView.bottomAnchor.constraint(equalTo: rigtViewView.bottomAnchor, constant: 0).isActive = true
+                    disableView.topAnchor.constraint(equalTo: window.topAnchor, constant: 0).isActive = true
+                    disableView.bottomAnchor.constraint(equalTo: window.bottomAnchor, constant: 0).isActive = true
                     disableView.rightAnchor.constraint(equalTo: rigtViewView.leftAnchor, constant: 0).isActive = true
-                    disableView.widthAnchor.constraint(equalToConstant: 2000).isActive = true
-                    disableView.alpha = 0
+                    disableView.leftAnchor.constraint(equalTo: window.leftAnchor).isActive = true
+             
                 }
             }
             
             UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseOut, animations: {
                 _value.frame.origin.x = show ? -self.sizeMenuWidth : 0
-                self.disableView.alpha = show ? 1 : 0
+               
             }, completion: { (bool) in
                 if bool,!show{
                     self.disableView.removeFromSuperview()
