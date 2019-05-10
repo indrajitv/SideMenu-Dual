@@ -21,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow()
         let dvc = SideMenu()
         dvc.leftViewController = SideMenuLeftViewController()
+        dvc.rightViewController = SideMenuLeftViewController()
         dvc.centerNavigationController = UINavigationController(rootViewController: TempViewController())
         sideMenu = dvc
         window?.rootViewController = dvc

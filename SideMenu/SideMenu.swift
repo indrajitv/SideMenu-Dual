@@ -27,7 +27,7 @@ class SideMenu:UIViewController{
         
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor.clear
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.15)
         
         let rightGesture = UISwipeGestureRecognizer(target: self, action: #selector(self.rightPanGestireRecogizer))
         rightGesture.direction = .right
@@ -111,6 +111,8 @@ class SideMenu:UIViewController{
                 disableView.bottomAnchor.constraint(equalTo: window.bottomAnchor, constant: 0).isActive = true
                 disableView.leftAnchor.constraint(equalTo: leftViewView.rightAnchor, constant: 0).isActive = true
                 disableView.rightAnchor.constraint(equalTo: window.rightAnchor).isActive = true
+                disableView.alpha = 0
+               
             }
             
             
@@ -118,9 +120,17 @@ class SideMenu:UIViewController{
                 _value.frame.origin.x = show ? self.sizeMenuWidth : 0
             }, completion: { (bool) in
           
-                if bool,!show{
-                    self.disableView.removeFromSuperview()
+                if bool{
+                    UIView.animate(withDuration: 1, animations: {
+                        self.disableView.alpha = show ? 1 : 0
+                    }, completion: { (_bool) in
+                        if _bool,!show{
+                            self.disableView.removeFromSuperview()
+                        }
+                    })
+                    
                 }
+                
             })
             
         }
@@ -134,11 +144,12 @@ class SideMenu:UIViewController{
             
             if show{
                 if show{
-                    rigtViewView.addSubview(disableView)
+                    window.addSubview(disableView)
                     disableView.topAnchor.constraint(equalTo: window.topAnchor, constant: 0).isActive = true
                     disableView.bottomAnchor.constraint(equalTo: window.bottomAnchor, constant: 0).isActive = true
                     disableView.rightAnchor.constraint(equalTo: rigtViewView.leftAnchor, constant: 0).isActive = true
                     disableView.leftAnchor.constraint(equalTo: window.leftAnchor).isActive = true
+                    disableView.alpha = 0
              
                 }
             }
@@ -147,8 +158,15 @@ class SideMenu:UIViewController{
                 _value.frame.origin.x = show ? -self.sizeMenuWidth : 0
                
             }, completion: { (bool) in
-                if bool,!show{
-                    self.disableView.removeFromSuperview()
+                if bool{
+                    UIView.animate(withDuration: 1, animations: {
+                        self.disableView.alpha = show ? 1 : 0
+                    }, completion: { (_bool) in
+                        if _bool,!show{
+                            self.disableView.removeFromSuperview()
+                        }
+                    })
+                    
                 }
             })
             
